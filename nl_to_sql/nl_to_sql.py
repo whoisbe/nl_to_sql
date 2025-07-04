@@ -211,10 +211,15 @@ Respond with only the JSON object.
             response_json = response.json()
             content = response_json["candidates"][0]["content"]["parts"][0]["text"]
             
-            if content.startswith("```json"):
-                content = content[7:-3].strip()
+            # FIX: Robustly find and parse the JSON object from the response.
+            json_start = content.find('{')
+            json_end = content.rfind('}') + 1
+            if json_start != -1 and json_end != 0:
+                json_str = content[json_start:json_end]
+                result_json = json.loads(json_str)
+            else:
+                raise json.JSONDecodeError("No JSON object found in the response", content, 0)
 
-            result_json = json.loads(content)
             action = result_json.get("action")
 
             if action == "sql":
