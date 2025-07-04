@@ -1,6 +1,9 @@
 # Natural Language to SQL with Reflex and Gemini 1.5 Pro
 
+[![NL TO SQL Screenshot](./assets/nl2sql.png)](https://youtu.be/9yZAV7Z_zbA?si=QYTpfWY6FYR827T5)
+
 This is a web application built with [Reflex](https://reflex.dev/) that allows you to interact with a [DuckDB](https://duckdb.org/) database using natural language. It leverages the **Gemini 1.5 Pro** API to translate natural language into SQL queries and database commands.
+
 
 ## Project Structure
 
