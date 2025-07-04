@@ -195,7 +195,6 @@ class State(rx.State):
 Respond with only the JSON object.
 """
         try:
-            # FIX: Replaced rx.call_api with httpx for compatibility.
             async with httpx.AsyncClient() as client:
                 response = await client.post(
                     f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key={self.api_key}",
@@ -265,7 +264,7 @@ def index() -> rx.Component:
     """The main application UI."""
     return rx.container(
         rx.vstack(
-            rx.heading("Natural Language Data Analysis", size="7", padding_bottom="1em"),
+            rx.heading("Natural Language Data Analysis", size="7", padding_bottom="0.5em"),
             rx.cond(
                 ~State.api_key_set,
                 rx.vstack(
@@ -285,20 +284,22 @@ def index() -> rx.Component:
                     ),
                     align="center",
                     padding="2em",
-                    border="1px solid #e2e8f0",
-                    border_radius="lg",
+                    border=f"1px solid {rx.color('gray', 6)}",
+                    border_radius="var(--radius-3)",
                     width="100%",
+                    max_width="500px", # Give the API key form a max width
                 )
             ),
             rx.box(
                 rx.foreach(State.chat_history, qa_pair),
                 width="100%",
-                height="60vh",
+                height="70vh",
                 overflow_y="auto",
-                border="1px solid #e2e8f0",
-                border_radius="lg",
+                border=f"1px solid {rx.color('gray', 6)}",
+                border_radius="var(--radius-3)",
                 padding="1rem",
-                bg="white"
+                # Use a slightly different dark background for contrast
+                background=rx.color('gray', 2), 
             ),
             rx.form(
                 rx.hstack(
@@ -317,19 +318,23 @@ def index() -> rx.Component:
             align="center",
             spacing="4",
             width="100%",
+            padding_x="2em", # Add horizontal padding for full-width layout
         ),
-        max_width="800px",
+        # Remove max_width to make the container span the full page
         padding_top="2rem",
+        width="100%", 
     )
 
 
 # Add state and page to the app.
 app = rx.App(
     theme=rx.theme(
-        appearance="light",
+        # Use a dark appearance for the solarized theme
+        appearance="dark",
         has_background=True,
         radius="large",
-        accent_color="grass",
+        # Use a solarized-friendly accent color
+        accent_color="cyan",
     )
 )
 app.add_page(index)
